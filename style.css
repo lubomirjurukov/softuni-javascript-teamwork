@@ -4,12 +4,14 @@ body {
 }
 .wrapper {
   width: 1200px;
-  height: 720px;
+  height: 650px;
   position: absolute;
   top: 5px;
   left: 5px;
 }
 canvas {
+  margin-left: 50px;
+  margin-right: 50px;
   position: absolute;
   top: 0;
   left: 0;
