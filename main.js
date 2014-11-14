@@ -6,10 +6,7 @@
   var ground = [];
   var platformWidth = 32;
   var platformHeight = canvas.height - platformWidth * 4;
-
-  /**
-   * Asset pre-loader object. Loads all images
-   */
+  //loading all objects
   var assetLoader = (function() {
     // images dictionary
     this.imgs        = {
@@ -25,11 +22,7 @@
     var numImgs      = Object.keys(this.imgs).length;    // total number of image assets
     this.totalAssest = numImgs;                          // total number of assets
 
-    /**
-     * Ensure all assets are loaded before using them
-     * @param {number} dic  - Dictionary name ('imgs', 'sounds', 'fonts')
-     * @param {number} name - Asset name in the dictionary
-     */
+    //checking if all assets are loaded before using them
     function assetLoaded(dic, name) {
       // don't count assets that have already loaded
       if (this[dic][name].status !== 'loading') {
@@ -45,9 +38,8 @@
       }
     }
 
-    /**
-     * Create assets, set callback for asset loading, set asset source
-     */
+    //Create assets, set callback for asset loading, set asset source
+
     this.downloadAll = function() {
       var _this = this;
       var src;
@@ -80,12 +72,12 @@
     startGame();
   }
 
-  /**
-   * Creates a Spritesheet
-   * @param {string} - Path to the image.
-   * @param {number} - Width (in px) of each frame.
-   * @param {number} - Height (in px) of each frame.
-   */
+  
+    // Creates a Spritesheet
+    // @param {string} - Path to the image.
+    // @param {number} - Width (in px) of each frame.
+    // @param {number} - Height (in px) of each frame.
+   
   function SpriteSheet(path, frameWidth, frameHeight) {
     this.image = new Image();
     this.frameWidth = frameWidth;
@@ -100,13 +92,13 @@
     this.image.src = path;
   }
 
-  /**
-   * Creates an animation from a spritesheet.
-   * @param {SpriteSheet} - The spritesheet used to create the animation.
-   * @param {number}      - Number of frames to wait for before transitioning the animation.
-   * @param {array}       - Range or sequence of frame numbers for the animation.
-   * @param {boolean}     - Repeat the animation once completed.
-   */
+  
+    // Creates an animation from a spritesheet.
+    // @param {SpriteSheet} - The spritesheet used to create the animation.
+    // @param {number}      - Number of frames to wait for before transitioning the animation.
+    // @param {array}       - Range or sequence of frame numbers for the animation.
+    // @param {boolean}     - Repeat the animation once completed.
+   
   function Animation(spritesheet, frameSpeed, startFrame, endFrame) {
 
     var animationSequence = [];  // array holding the order of the animation
@@ -117,9 +109,7 @@
     for (var frameNumber = startFrame; frameNumber <= endFrame; frameNumber++)
       animationSequence.push(frameNumber);
 
-    /**
-     * Update the animation
-     */
+    //updating the animation
     this.update = function() {
 
       // update to the next frame if it is time
@@ -130,11 +120,11 @@
       counter = (counter + 1) % frameSpeed;
     };
 
-    /**
-     * Draw the current frame
-     * @param {integer} x - X position to draw
-     * @param {integer} y - Y position to draw
-     */
+    
+     //  Draw the current frame
+     // @param {integer} x - X position to draw at
+     // @param {integer} y - Y position to draw at
+     
     this.draw = function(x, y) {
       // get the row and col of the frame
       var row = Math.floor(animationSequence[currentFrame] / spritesheet.framesPerRow);
@@ -149,17 +139,13 @@
     };
   }
 
-  /**
-   * Create a parallax background
-   */
+  //create paralax background
   var background = (function() {
     var sky   = {};
     var backdrop = {};
     var backdrop2 = {};
 
-    /**
-     * Draw the backgrounds to the screen at different speeds
-     */
+    // draw the backgrounds at different speeds
     this.draw = function() {
       ctx.drawImage(assetLoader.imgs.bg, 0, 0);
 
@@ -187,9 +173,7 @@
         backdrop2.x = 0;
     };
 
-    /**
-     * Reset background to zero
-     */
+    //reset background to zero
     this.reset = function()  {
       sky.x = 0;
       sky.y = 0;
@@ -210,9 +194,7 @@
     };
   })();
 
-  /**
-   * Game loop
-   */
+  //game loop
   function animate() {
     requestAnimFrame( animate );
 
@@ -243,9 +225,9 @@
             };
   })();
 
-  /**
-   * Start the game - reset all variables and entities, spawn platforms and water.
-   */
+  
+    // Start the game - reset all variables and entities, spawn platforms and water.
+   
   function startGame() {
     // setup the player
     player.width  = 60;
