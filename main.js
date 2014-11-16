@@ -3,7 +3,7 @@
   var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');
   var player, score, stop, ticker;
-  var ground = [], water = [], enemies = [], environment = [];
+  var ground = [], lava = [], enemies = [], environment = [];
 
   // platform variables
   var platformHeight, platformLength, gapLength;
@@ -36,20 +36,20 @@
   var assetLoader = (function() {
     // images dictionary
     this.imgs        = {
-      'bg'            : 'imgs/bg.png',
+      'bg'            : 'imgs/background.png',
       'sky'           : 'imgs/sky.png',
       'backdrop'      : 'imgs/backdrop.png',
       'backdrop2'     : 'imgs/backdrop_ground.png',
-      'grass'         : 'imgs/grass.png',
+      'rock'         : 'imgs/rock.png',
       'avatar_normal' : 'imgs/normal_walk.png',
-      'water'         : 'imgs/water.png',
-      'grass1'        : 'imgs/grassMid1.png',
-      'grass2'        : 'imgs/grassMid2.png',
+      'lava'          : 'imgs/lava.png',
+      'rock1'         : 'imgs/rockMid1.png',
+      'rock2'         : 'imgs/rockMid2.png',
       'bridge'        : 'imgs/bridge.png',
       'plant'         : 'imgs/plant.png',
       'bush1'         : 'imgs/bush1.png',
       'bush2'         : 'imgs/bush2.png',
-      'cliff'         : 'imgs/grassCliffRight.png',
+      'cliff'         : 'imgs/rockCliffRight.png',
       'spikes'        : 'imgs/spikes.png',
       'box'           : 'imgs/boxCoin.png',
       'slime'         : 'imgs/slime.png'
@@ -427,10 +427,10 @@
     switch (platformHeight) {
       case 0:
       case 1:
-        type = Math.random() > 0.5 ? 'grass1' : 'grass2';
+        type = Math.random() > 0.5 ? 'rock1' : 'rock2';
         break;
       case 2:
-        type = 'grass';
+        type = 'rock';
         break;
       case 3:
         type = 'bridge';
@@ -475,20 +475,20 @@
   }
 
   /**
-   * Update all water position and draw.
+   * Update all lava position and draw.
    */
-  function updateWater() {
-    // animate water
-    for (var i = 0; i < water.length; i++) {
-      water[i].update();
-      water[i].draw();
+  function updateLava() {
+    // animate lava
+    for (var i = 0; i < lava.length; i++) {
+      lava[i].update();
+      lava[i].draw();
     }
 
-    // remove water that has gone off screen
-    if (water[0] && water[0].x < -platformWidth) {
-      var w = water.splice(0, 1)[0];
-      w.x = water[water.length-1].x + platformWidth;
-      water.push(w);
+    // remove lava that has gone off screen
+    if (lava[0] && lava[0].x < -platformWidth) {
+      var w = lava.splice(0, 1)[0];
+      w.x = lava[lava.length-1].x + platformWidth;
+      lava.push(w);
     }
   }
 
@@ -633,7 +633,7 @@
       background.draw();
 
       // update entities
-      updateWater();
+      updateLava();
       updateEnvironment();
       updatePlayer();
       updateGround();
@@ -713,12 +713,12 @@
   })();
 
   /**
-   * Start the game - reset all variables and entities, spawn ground and water.
+   * Start the game - reset all variables and entities, spawn ground and lava.
    */
   function startGame() {
     document.getElementById('game-over').style.display = 'none';
     ground = [];
-    water = [];
+    lava = [];
     environment = [];
     enemies = [];
     player.reset();
@@ -732,11 +732,11 @@
     ctx.font = '16px arial, sans-serif';
 
     for (var i = 0; i < 30; i++) {
-      ground.push(new Sprite(i * (platformWidth-3), platformBase - platformHeight * platformSpacer, 'grass'));
+      ground.push(new Sprite(i * (platformWidth-3), platformBase - platformHeight * platformSpacer, 'rock'));
     }
 
     for (i = 0; i < canvas.width / 32 + 2; i++) {
-      water.push(new Sprite(i * platformWidth, platformBase, 'water'));
+      lava.push(new Sprite(i * platformWidth, platformBase, 'lava'));
     }
 
     background.reset();
