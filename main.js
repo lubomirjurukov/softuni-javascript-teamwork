@@ -2,7 +2,7 @@
     // define variables
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
-    ctx.fillStyle="#FF0000";
+    ctx.fillStyle="white";
     var player, score, stop, ticker;
     var ground = [],
         lava = [],
@@ -66,9 +66,9 @@
             'rock1': 'imgs/rockMid1.png',
             'rock2': 'imgs/rockMid2.png',
             'bridge': 'imgs/bridge.png',
-            'plant': 'imgs/plant.png',
-            'bush1': 'imgs/bush1.png',
-            'bush2': 'imgs/bush2.png',
+            'stone': 'imgs/stone.png',
+            'stone1': 'imgs/stone1.png',
+            'stone2': 'imgs/stone2.png',
             'cliff': 'imgs/rockCliffRight.png',
             'spikes': 'imgs/spikes.png',
             'box': 'imgs/boxCoin.png',
@@ -666,18 +666,18 @@
                 environment.push(new Sprite(
                     canvas.width + platformWidth % player.speed,
                     platformBase - platformHeight * platformSpacer - platformWidth,
-                    'plant'
+                    'stone'
                 ));
             } else if (platformLength > 2) {
                 environment.push(new Sprite(
                     canvas.width + platformWidth % player.speed,
                     platformBase - platformHeight * platformSpacer - platformWidth,
-                    'bush1'
+                    'stone2'
                 ));
                 environment.push(new Sprite(
                     canvas.width + platformWidth % player.speed + platformWidth,
                     platformBase - platformHeight * platformSpacer - platformWidth,
-                    'bush2'
+                    'stone1'
                 ));
             }
         }
