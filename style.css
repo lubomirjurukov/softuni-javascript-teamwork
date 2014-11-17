@@ -168,3 +168,6 @@ a {
   height: 360px;
   position: absolute;
 }
+#score {
+  color:red;
+}

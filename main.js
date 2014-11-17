@@ -2,6 +2,7 @@
     // define variables
     var canvas = document.getElementById('canvas');
     var ctx = canvas.getContext('2d');
+    ctx.fillStyle="#FF0000";
     var player, score, stop, ticker;
     var ground = [],
         lava = [],
@@ -392,9 +393,9 @@
 
         // spritesheets
         player.sheet = new SpriteSheet('imgs/normal_walk.png', player.width, player.height);
-        player.walkAnim = new Animation(player.sheet, 4, 0, 15);
-        player.jumpAnim = new Animation(player.sheet, 4, 15, 15);
-        player.fallAnim = new Animation(player.sheet, 4, 11, 11);
+        player.walkAnim = new Animation(player.sheet, 2, 0, 15);
+        player.jumpAnim = new Animation(player.sheet, 2, 15, 15);
+        player.fallAnim = new Animation(player.sheet, 2, 11, 11);
         player.anim = player.walkAnim;
 
         Vector.call(player, 0, 0, 0, player.dy);
