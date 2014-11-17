@@ -11,6 +11,23 @@
   var platformBase = canvas.height - platformWidth;  // bottom row of the game
   var platformSpacer = 64;
 
+  
+  var canUseLocalStorage = 'localStorage' in window && window.localStorage !== null;
+  var playSound;
+
+  // set the sound preference
+  if (canUseLocalStorage) {
+	playSound = (localStorage.getItem('kandi.playSound') === "true")
+
+	if (playSound) {
+	  $('.sound').addClass('sound-on').removeClass('sound-off');
+	}
+	else {
+	 $('.sound').addClass('sound-off').removeClass('sound-on');
+	}
+  }
+  
+  
   /**
    * Get a random number between range
    * @param {integer}
@@ -54,9 +71,17 @@
       'box'           : 'imgs/boxCoin.png',
       'slime'         : 'imgs/slime.png'
     };
+	
+	// sounds dictionary
+    this.sounds      = {
+      'bg'            : 'sounds/bg.mp3',
+      'jump'          : 'sounds/jump.mp3',
+      'gameOver'      : 'sounds/gameOver.mp3'
+    };
 
     var assetsLoaded = 0;                                // how many assets have been loaded
     var numImgs      = Object.keys(this.imgs).length;    // total number of image assets
+	var numSounds    = Object.keys(this.sounds).length;  // total number of sound assets
     this.totalAssest = numImgs;                          // total number of assets
 
     /**
@@ -78,6 +103,16 @@
         this.finished();
       }
     }
+	
+  /**
+   * Check the ready state of an Audio file.
+   * @param {object} sound - Name of the audio asset that was loaded.
+   */
+  function _checkAudioState(sound) {
+    if (this.sounds[sound].status === 'loading' && this.sounds[sound].readyState === 4) {
+      assetLoaded.call(this, 'sounds', sound);
+    }
+  }
 
     /**
      * Create assets, set callback for asset loading, set asset source
@@ -101,18 +136,54 @@
           })(_this, img);
         }
       }
+    
+
+    // load sounds
+    for (var sound in this.sounds) {
+      if (this.sounds.hasOwnProperty(sound)) {
+        src = this.sounds[sound];
+
+        // create a closure for event binding
+        (function(_this, sound) {
+          _this.sounds[sound] = new Audio();
+          _this.sounds[sound].status = 'loading';
+          _this.sounds[sound].name = sound;
+          _this.sounds[sound].addEventListener('canplay', function() {
+            _checkAudioState.call(_this, sound);
+          });
+          _this.sounds[sound].src = src;
+          _this.sounds[sound].preload = 'auto';
+          _this.sounds[sound].load();
+        })(_this, sound);
+      }
     }
+  }
 
     return {
       imgs: this.imgs,
+	  sounds: this.sounds,
       totalAssest: this.totalAssest,
       downloadAll: this.downloadAll
     };
   })();
 
-  assetLoader.finished = function() {
-    startGame();
-  }
+	/**
+	 * Show asset loading progress
+	 * @param {integer} progress - Number of assets loaded
+	 * @param {integer} total - Total number of assets
+	 */
+	assetLoader.progress = function(progress, total) {
+	  var pBar = document.getElementById('progress-bar');
+	  pBar.value = progress / total;
+	  document.getElementById('p').innerHTML = Math.round(pBar.value * 100) + "%";
+	}
+
+	/**
+	 * Load the main menu
+	 */
+	assetLoader.finished = function() {
+	  mainMenu();
+	}
 
   /**
    * Creates a Spritesheet
@@ -335,6 +406,7 @@
         player.isJumping = true;
         player.dy = player.jumpDy;
         jumpCounter = 12;
+		assetLoader.sounds.jump.play();
       }
 
       // jump higher if the space bar is continually pressed
@@ -711,6 +783,24 @@
           window.setTimeout(callback, 1000 / 60);
         };
   })();
+  
+  
+/**
+ * Show the main menu after loading all assets
+ */
+function mainMenu() {
+  for (var sound in assetLoader.sounds) {
+    if (assetLoader.sounds.hasOwnProperty(sound)) {
+      assetLoader.sounds[sound].muted = !playSound;
+    }
+  }
+
+  $('#progress').hide();
+  $('#main').show();
+  $('#menu').addClass('main');
+  $('.sound').show();
+}
+
 
   /**
    * Start the game - reset all variables and entities, spawn ground and lava.
@@ -742,17 +832,70 @@
     background.reset();
 
     animate();
+	
+	assetLoader.sounds.gameOver.pause();
+	assetLoader.sounds.bg.currentTime = 0;
+	assetLoader.sounds.bg.loop = true;
+	assetLoader.sounds.bg.play();
   }
+
+/**
+ * End the game and restart
+ */
+function gameOver() {
+  stop = true;
+  $('#score').html(score);
+  $('#game-over').show();
+  assetLoader.sounds.bg.pause();
+  assetLoader.sounds.gameOver.currentTime = 0;
+  assetLoader.sounds.gameOver.play();
+}
 
   /**
-   * End the game and restart
+   * Click handlers for the different menu screens
    */
-  function gameOver() {
-    stop = true;
-    document.getElementById('game-over').style.display = 'block';
-  }
-
-  document.getElementById('restart').addEventListener('click', startGame);
-
+  $('.credits').click(function() {
+    $('#main').hide();
+    $('#credits').show();
+    $('#menu').addClass('credits');
+  });
+  $('.back').click(function() {
+    $('#credits').hide();
+    $('#main').show();
+    $('#menu').removeClass('credits');
+  });
+  $('.sound').click(function() {
+    var $this = $(this);
+    // sound off
+    if ($this.hasClass('sound-on')) {
+      $this.removeClass('sound-on').addClass('sound-off');
+      playSound = false;
+    }
+    // sound on
+    else {
+      $this.removeClass('sound-off').addClass('sound-on');
+      playSound = true;
+    }
+  
+    if (canUseLocalStorage) {
+      localStorage.setItem('kandi.playSound', playSound);
+    }
+  
+    // mute or unmute all sounds
+    for (var sound in assetLoader.sounds) {
+      if (assetLoader.sounds.hasOwnProperty(sound)) {
+        assetLoader.sounds[sound].muted = !playSound;
+      }
+    }
+  });
+  $('.play').click(function() {
+    $('#menu').hide();
+    startGame();
+  });
+  $('.restart').click(function() {
+    $('#game-over').hide();
+    startGame();
+  });
+  
   assetLoader.downloadAll();
-})();
+  })(jQuery);
