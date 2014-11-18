@@ -55,10 +55,10 @@ a {
   background-color: grey;
 }
 #menu.main {
-  background-image: url('imgs/menu-bg.png');
+  background-image: url('imgs/background.png');
 }
 #menu.credits {
-  background-image: url('imgs/credits-bg.png');
+  background-image: url('imgs/background.png');
 }
 
 #progress {
@@ -114,20 +114,20 @@ a {
   margin: 0 auto;
   height: 30px;
   line-height: 30px;
-  border: 1px solid #AA2666;
+  border: 1px solid black;
   color: white;
   font-weight: bold;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-  background-color: #FB1886;
-  background-image: -webkit-linear-gradient(bottom, #FB1886 0%, #B30D5D 100%);
-  background-image:         linear-gradient(to bottom, #FB1886 0%, #B30D5D 100%);
+  background-color: #FF0000;
+  background-image: -webkit-linear-gradient(bottom, #FF0000 0%, #880000 100%);
+  background-image:         linear-gradient(to bottom, #FF0000 0%, #880000 100%);
   border-radius: 5px;
 }
 
 .button:hover {
-  background-color: #B30D5D;
-  background-image: -webkit-linear-gradient(bottom, #B30D5D 0%, #FB1886 100%);
-  background-image:         linear-gradient(to bottom, #B30D5D 0%, #FB1886 100%);
+  background-color: #880000;
+  background-image: -webkit-linear-gradient(bottom, #880000 0%, #FF0000 100%);
+  background-image:         linear-gradient(to bottom, #880000 0%, #FF0000 100%);
 }
 
 #credits {
@@ -167,7 +167,10 @@ a {
   width: 600px;
   height: 360px;
   position: absolute;
+  color: white;.
+
 }
 #score {
-  color:white;
+  color:#FF0000;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }

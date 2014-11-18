@@ -524,7 +524,7 @@
     }
 
     /**
-     * Update all ground position and draw. Also check for collision against the player.
+     * Update all ground position and draw. Also check for collision again  st the player.
      */
     function updateGround() {
         // animate ground
