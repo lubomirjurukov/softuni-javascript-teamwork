@@ -31,27 +31,27 @@
     }
 
 
-    /**
-     * Get a random number between range
-     * @param {integer}
-     * @param {integer}
+    /*
+     Get a random number between range
+     @param {integer}
+     @param {integer}
      */
     function rand(low, high) {
         return Math.floor(Math.random() * (high - low + 1) + low);
     }
 
-    /**
-     * Bound a number between range
-     * @param {integer} num - Number to bound
-     * @param {integer}
-     * @param {integer}
+    /*
+     Bound a number between range
+     @param {integer} num - Number to bound
+     @param {integer}
+     @param {integer}
      */
     function bound(num, low, high) {
         return Math.max(Math.min(num, high), low);
     }
 
-    /**
-     * Asset pre-loader object. Loads all images
+    /*
+     Asset pre-loader object. Loads all images
      */
     var assetLoader = (function() {
         // images dictionary
@@ -79,7 +79,7 @@
         this.sounds = {
             'bg': 'sounds/bg.mp3',
             'jump': 'sounds/jump.mp3',
-            'gameOver': 'sounds/gameOver.mp3'
+            'gameOver': 'sounds/gameOver.wav'
         };
 
         var assetsLoaded = 0; // how many assets have been loaded
@@ -87,10 +87,10 @@
         var numSounds = Object.keys(this.sounds).length; // total number of sound assets
         this.totalAssest = numImgs; // total number of assets
 
-        /**
-         * Ensure all assets are loaded before using them
-         * @param {number} dic  - Dictionary name ('imgs', 'sounds', 'fonts')
-         * @param {number} name - Asset name in the dictionary
+        /*
+         Ensure all assets are loaded before using them
+         @param {number} dic  - Dictionary name ('imgs', 'sounds', 'fonts')
+         @param {number} name - Asset name in the dictionary
          */
         function assetLoaded(dic, name) {
             // don't count assets that have already loaded
@@ -108,8 +108,8 @@
         }
 
         /**
-         * Check the ready state of an Audio file.
-         * @param {object} sound - Name of the audio asset that was loaded.
+         Check the ready state of an Audio file.
+         @param {object} sound - Name of the audio asset that was loaded.
          */
         function _checkAudioState(sound) {
             if (this.sounds[sound].status === 'loading' && this.sounds[sound].readyState === 4) {
@@ -117,8 +117,8 @@
             }
         }
 
-        /**
-         * Create assets, set callback for asset loading, set asset source
+        /*
+         Create assets, set callback for asset loading, set asset source
          */
         this.downloadAll = function() {
             var _this = this;
@@ -172,10 +172,10 @@
         };
     })();
 
-    /**
-     * Show asset loading progress
-     * @param {integer} progress - Number of assets loaded
-     * @param {integer} total - Total number of assets
+    /*
+     Show asset loading progress
+     @param {integer} progress - Number of assets loaded
+     @param {integer} total - Total number of assets
      */
     assetLoader.progress = function(progress, total) {
         var pBar = document.getElementById('progress-bar');
@@ -183,18 +183,18 @@
         document.getElementById('p').innerHTML = Math.round(pBar.value * 100) + "%";
     }
 
-    /**
-     * Load the main menu
+    /*
+     Load the main menu
      */
     assetLoader.finished = function() {
         mainMenu();
     }
 
-    /**
-     * Creates a Spritesheet
-     * @param {string} - Path to the image.
-     * @param {number} - Width (in px) of each frame.
-     * @param {number} - Height (in px) of each frame.
+    /*
+     Creates a Spritesheet
+     @param {string} - Path to the image.
+     @param {number} - Width (in px) of each frame.
+     @param {number} - Height (in px) of each frame.
      */
     function SpriteSheet(path, frameWidth, frameHeight) {
         this.image = new Image();
@@ -210,12 +210,12 @@
         this.image.src = path;
     }
 
-    /**
-     * Creates an animation from a spritesheet.
-     * @param {SpriteSheet} - The spritesheet used to create the animation.
-     * @param {number}      - Number of frames to wait for before transitioning the animation.
-     * @param {array}       - Range or sequence of frame numbers for the animation.
-     * @param {boolean}     - Repeat the animation once completed.
+    /*
+     Creates an animation from a spritesheet.
+     @param {SpriteSheet} - The spritesheet used to create the animation.
+     @param {number}      - Number of frames to wait for before transitioning the animation.
+     @param {array}       - Range or sequence of frame numbers for the animation.
+     @param {boolean}     - Repeat the animation once completed.
      */
     function Animation(spritesheet, frameSpeed, startFrame, endFrame) {
 
@@ -227,8 +227,8 @@
         for (var frameNumber = startFrame; frameNumber <= endFrame; frameNumber++)
             animationSequence.push(frameNumber);
 
-        /**
-         * Update the animation
+        /*
+         Update the animation
          */
         this.update = function() {
 
@@ -240,10 +240,10 @@
             counter = (counter + 1) % frameSpeed;
         };
 
-        /**
-         * Draw the current frame
-         * @param {integer} x - X position to draw
-         * @param {integer} y - Y position to draw
+        /*
+         Draw the current frame
+         @param {integer} x - X position to draw
+         @param {integer} y - Y position to draw
          */
         this.draw = function(x, y) {
             // get the row and col of the frame
@@ -259,16 +259,16 @@
         };
     }
 
-    /**
-     * Create a parallax background
+    /*
+     Create a parallax background
      */
     var background = (function() {
         var sky = {};
         var backdrop = {};
         var backdrop2 = {};
 
-        /**
-         * Draw the backgrounds to the screen at different speeds
+        /*
+         Draw the backgrounds to the screen at different speeds
          */
         this.draw = function() {
             ctx.drawImage(assetLoader.imgs.bg, 0, 0);
@@ -297,8 +297,8 @@
                 backdrop2.x = 0;
         };
 
-        /**
-         * Reset background to zero
+        /*
+         Reset background to zero
          */
         this.reset = function() {
             sky.x = 0;
@@ -320,12 +320,12 @@
         };
     })();
 
-    /**
-     * A vector for 2d space.
-     * @param {integer} x - Center x coordinate.
-     * @param {integer} y - Center y coordinate.
-     * @param {integer} dx - Change in x.
-     * @param {integer} dy - Change in y.
+    /*
+     A vector for 2d space.
+     @param {integer} x - Center x coordinate.
+     @param {integer} y - Center y coordinate.
+     @param {integer} dx - Change in x.
+     @param {integer} dy - Change in y.
      */
     function Vector(x, y, dx, dy) {
         // position
@@ -336,18 +336,18 @@
         this.dy = dy || 0;
     }
 
-    /**
-     * Advance the vectors position by dx,dy
+    /*
+     Advance the vectors position by dx,dy
      */
     Vector.prototype.advance = function() {
         this.x += this.dx;
         this.y += this.dy;
     };
 
-    /**
-     * Get the minimum distance between two vectors
-     * @param {Vector}
-     * @return minDist
+    /*
+     Get the minimum distance between two vectors
+     @param {Vector}
+     @return minDist
      */
     Vector.prototype.minDist = function(vec) {
         var minDist = Infinity;
@@ -375,8 +375,8 @@
         return Math.sqrt(minDist);
     };
 
-    /**
-     * The player object
+    /*
+     The player object
      */
     var player = (function(player) {
         // add properties directly to the player imported object
@@ -393,17 +393,17 @@
 
         // spritesheets
         player.sheet = new SpriteSheet('imgs/normal_walk.png', player.width, player.height);
-        player.walkAnim = new Animation(player.sheet, 2, 0, 15);
-        player.jumpAnim = new Animation(player.sheet, 2, 15, 15);
-        player.fallAnim = new Animation(player.sheet, 2, 11, 11);
+        player.walkAnim = new Animation(player.sheet, 4, 0, 15);
+        player.jumpAnim = new Animation(player.sheet, 4, 15, 15);
+        player.fallAnim = new Animation(player.sheet, 4, 11, 11);
         player.anim = player.walkAnim;
 
         Vector.call(player, 0, 0, 0, player.dy);
 
         var jumpCounter = 0; // how long the jump button can be pressed down
 
-        /**
-         * Update the player's position and animation
+        /*
+        Update the player's position and animation
          */
         player.update = function() {
 
@@ -443,15 +443,15 @@
             player.anim.update();
         };
 
-        /**
-         * Draw the player at it's current position
+        /*
+         Draw the player at it's current position
          */
         player.draw = function() {
             player.anim.draw(player.x, player.y);
         };
 
-        /**
-         * Reset the player's position
+        /*
+         Reset the player's position
          */
         player.reset = function() {
             player.x = 64;
@@ -461,11 +461,11 @@
         return player;
     })(Object.create(Vector.prototype));
 
-    /**
-     * Sprites are anything drawn to the screen (ground, enemies, etc.)
-     * @param {integer} x - Starting x position of the player
-     * @param {integer} y - Starting y position of the player
-     * @param {string} type - Type of sprite
+    /*
+     Sprites are anything drawn to the screen (ground, enemies, etc.)
+     @param {integer} x - Starting x position of the player
+     @param {integer} y - Starting y position of the player
+     @param {string} type - Type of sprite
      */
     function Sprite(x, y, type) {
         this.x = x;
@@ -475,16 +475,16 @@
         this.type = type;
         Vector.call(this, x, y, 0, 0);
 
-        /**
-         * Update the Sprite's position by the player's speed
+        /*
+         Update the Sprite's position by the player's speed
          */
         this.update = function() {
             this.dx = -player.speed;
             this.advance();
         };
 
-        /**
-         * Draw the sprite at it's current position
+        /*
+         Draw the sprite at it's current position
          */
         this.draw = function() {
             ctx.save();
@@ -495,9 +495,9 @@
     }
     Sprite.prototype = Object.create(Vector.prototype);
 
-    /**
-     * Get the type of a platform based on platform height
-     * @return Type of platform
+    /*
+     Get the type of a platform based on platform height
+     @return Type of platform
      */
     function getType() {
         var type;
@@ -523,8 +523,8 @@
         return type;
     }
 
-    /**
-     * Update all ground position and draw. Also check for collision again  st the player.
+    /*
+     Update all ground position and draw. Also check for collision again  st the player.
      */
     function updateGround() {
         // animate ground
@@ -551,8 +551,8 @@
         }
     }
 
-    /**
-     * Update all lava position and draw.
+    /*
+     Update all lava position and draw.
      */
     function updateLava() {
         // animate lava
@@ -569,8 +569,8 @@
         }
     }
 
-    /**
-     * Update all environment position and draw.
+    /*
+     Update all environment position and draw.
      */
     function updateEnvironment() {
         // animate environment
@@ -585,8 +585,8 @@
         }
     }
 
-    /**
-     * Update all enemies position and draw. Also check for collision against the player.
+    /*
+     Update all enemies position and draw. Also check for collision against the player.
      */
     function updateEnemies() {
         // animate enemies
@@ -606,8 +606,8 @@
         }
     }
 
-    /**
-     * Update the players position and draw
+    /*
+     Update the players position and draw
      */
     function updatePlayer() {
         player.update();
@@ -619,8 +619,8 @@
         }
     }
 
-    /**
-     * Spawn new sprites off screen
+    /*
+     Spawn new sprites off screen
      */
     function spawnSprites() {
         // increase score
@@ -657,8 +657,8 @@
         }
     }
 
-    /**
-     * Spawn new environment sprites off screen
+    /*
+     Spawn new environment sprites off screen
      */
     function spawnEnvironmentSprites() {
         if (score > 40 && rand(0, 20) === 0 && platformHeight < 3) {
@@ -683,8 +683,8 @@
         }
     }
 
-    /**
-     * Spawn new enemy sprites off screen
+    /*
+     Spawn new enemy sprites off screen
      */
     function spawnEnemySprites() {
         if (score > 100 && Math.random() > 0.96 && enemies.length < 3 && platformLength > 5 &&
@@ -698,8 +698,8 @@
         }
     }
 
-    /**
-     * Game loop
+    /*
+     Game loop
      */
     function animate() {
         if (!stop) {
@@ -747,8 +747,8 @@
         }
     }
 
-    /**
-     * Keep track of the spacebar events
+    /*
+     Keep track of the spacebar events
      */
     var KEY_CODES = {
         32: 'space'
@@ -774,8 +774,8 @@
         }
     };
 
-    /**
-     * Request Animation Polyfill
+    /*
+     Request Animation Polyfill
      */
     var requestAnimFrame = (function() {
         return window.requestAnimationFrame ||
@@ -789,8 +789,8 @@
     })();
 
 
-    /**
-     * Show the main menu after loading all assets
+    /*
+     Show the main menu after loading all assets
      */
     function mainMenu() {
         for (var sound in assetLoader.sounds) {
@@ -806,8 +806,8 @@
     }
 
 
-    /**
-     * Start the game - reset all variables and entities, spawn ground and lava.
+    /*
+     Start the game - reset all variables and entities, spawn ground and lava.
      */
     function startGame() {
         document.getElementById('game-over').style.display = 'none';
@@ -843,8 +843,8 @@
         assetLoader.sounds.bg.play();
     }
 
-    /**
-     * End the game and restart
+    /*
+     End the game and restart
      */
     function gameOver() {
         stop = true;
@@ -855,8 +855,8 @@
         assetLoader.sounds.gameOver.play();
     }
 
-    /**
-     * Click handlers for the different menu screens
+    /*
+     Click handlers for the different menu screens
      */
     $('.credits').click(function() {
         $('#main').hide();
